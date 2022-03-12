@@ -11,7 +11,8 @@
     "aurelia-bootstrapper": "^2.3.3",
     "aurelia-animator-css": "^1.0.4"
   },
-  "homepage": ".",
+  "homepage": "https://daniilbakach.github.io/aurelia-test-page/dist",
+  "start_url": ".",
   "devDependencies": {
     "eslint": "^8.7.0",
     "aurelia-cli": "^2.0.3",
