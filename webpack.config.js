@@ -17,6 +17,7 @@ const when = (condition, config, negativeConfig) =>
 const outDir = path.resolve(__dirname, project.platform.output);
 const srcDir = path.resolve(__dirname, 'src');
 const baseUrl = '/';
+const prodUrl = '/aurelia-test-page/dist/'
 
 const cssRules = [
   {
@@ -51,7 +52,7 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
   mode: production ? 'production' : 'development',
   output: {
     path: outDir,
-    publicPath: baseUrl,
+    publicPath: prodUrl,
     filename: production ? '[name].[chunkhash].bundle.js' : '[name].[fullhash].bundle.js',
     chunkFilename: production ? '[name].[chunkhash].chunk.js' : '[name].[fullhash].chunk.js'
   },
