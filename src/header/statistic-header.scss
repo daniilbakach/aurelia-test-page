@@ -1,0 +1,41 @@
+@import '../SASS/_variables.scss';
+
+.header{
+    background-color: $color-darkGrey;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.search{
+    color: $color-white;
+    display: flex;
+    
+
+    .search__items{
+        display: flex;
+        list-style-type: none;
+        
+    }
+
+    .search__item{
+        padding-left: 10px;
+        a{
+            color: $color-white;
+            text-decoration: none;
+            &:hover{
+                color: rgba(255,255,255,0.7);
+            }
+        }
+    }
+}
+
+.icon{
+    &.github-icon{
+        fill: $color-white;
+        padding-right: 10px;
+        &:hover{
+            fill: rgba(255,255,255,0.7);
+        }
+    }
+}

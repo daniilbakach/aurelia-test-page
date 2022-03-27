@@ -209,6 +209,17 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
         // because Aurelia would try to require it again in runtime
         use: cssRules
       },
+      {
+        test: /\.s[ac]ss$/i,
+        use: [
+          // Creates `style` nodes from JS strings
+          "style-loader",
+          // Translates CSS into CommonJS
+          "css-loader",
+          // Compiles Sass to CSS
+          "sass-loader",
+        ],
+      },
       // Skip minimize in production build to avoid complain on unescaped < such as
       // <span>${ c < 5 ? c : 'many' }</span>
       { test: /\.html$/i, loader: 'html-loader', options: { minimize: false } },
