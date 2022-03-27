@@ -1,17 +1,6 @@
-import {bindable} from 'aurelia-framework';
+import {bindable, autoinject} from 'aurelia-framework';
 import './statistic-header.scss';
 
+@autoinject
 export class StatisticHeader{
-    constructor(){}
-
-    @bindable searchBy: string;
-
-    setRepos(){
-        this.searchBy = 'repos';
-        console.log(this.searchBy);
-    }
-    setUser(){
-        this.searchBy = 'user';
-        console.log(this.searchBy);
-    }
 }
