@@ -1,0 +1,16 @@
+.information {
+    display: flex;
+    &.information__wrapper{
+        padding: 20px;
+    }
+    .information__avatar {
+        border-radius: 100%;
+        height: 200px;
+        width: 2
+        00px;
+    }
+    .information__content {
+        margin-left: 20px;
+    }
+}
+
