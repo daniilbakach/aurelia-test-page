@@ -9,6 +9,7 @@ export class StatisticInformation{
     reposData;
     reposNames: any =[];
     reposCommitsCount: any = [];
+    randomColors: any =[];
     
     chart;
     async attached(){
@@ -16,40 +17,7 @@ export class StatisticInformation{
         this.data;
         await this.loadReposData(); 
         console.log(this.data.repos_url)
-        new Chart(this.chart, {
-            type: 'pie',
-            data: {
-                labels: this.reposNames,
-                datasets: [{
-                    label: '# of Votes',
-                    data: this.reposCommitsCount,
-                    // backgroundColor: [
-                    //     'rgba(255, 99, 132, 0.2)',
-                    //     'rgba(54, 162, 235, 0.2)',
-                    //     'rgba(255, 206, 86, 0.2)',
-                    //     'rgba(75, 192, 192, 0.2)',
-                    //     'rgba(153, 102, 255, 0.2)',
-                    //     'rgba(255, 159, 64, 0.2)'
-                    // ],
-                    // borderColor: [
-                    //     'rgba(255, 99, 132, 1)',
-                    //     'rgba(54, 162, 235, 1)',
-                    //     'rgba(255, 206, 86, 1)',
-                    //     'rgba(75, 192, 192, 1)',
-                    //     'rgba(153, 102, 255, 1)',
-                    //     'rgba(255, 159, 64, 1)'
-                    // ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: {
-                        position: 'chartArea',
-                    }
-                }
-            }
-        });
+        
     }
 
 
@@ -60,6 +28,8 @@ export class StatisticInformation{
         console.log(this.reposData);
         await this.getReposNames(this.reposData);
         await this.getReposCommitsCount(this.reposData)
+        await this.generateRandomColor()
+        await this.generateCommitsChart();
     }
 
     getReposNames(reposData){
@@ -71,12 +41,20 @@ export class StatisticInformation{
 
     async getReposCommitsCount(reposData){
         for(const repository of reposData){
-            const url = repository.commits_url.slice(0, -6);
-            const response = await fetch(url);
-            const commits = await response.json();
-            this.reposCommitsCount.push(commits.length)
+            for(let i = 1; i < Infinity; i){
+                const url = `${repository.commits_url.slice(0, -6)}?per_page=100&page=${i}`;
+                const response = await fetch(url);
+                const commits = await response.json();
+                this.reposCommitsCount.push((i - 1) * 100 + commits.length)
+                if(commits.length === 100){
+                    i++;
+                } else{
+                    break;
+                }
+            }
             
         }
+        
         console.log(this.reposCommitsCount)
     }
 
@@ -86,5 +64,37 @@ export class StatisticInformation{
 
     get formatLastChangeDate(){
         return moment(this.data.updated_at).format("dddd, MMMM Do YYYY, h:mm:ss a") + ` (${moment(this.data.updated_at).fromNow()})`
+    }
+
+    generateRandomColor(){
+        for(const i of this.reposNames){
+            let color = '';
+            for(let i = 0; i < 6; i++){
+                color += Math.floor(Math.random() * 16).toString(16);
+            }
+            this.randomColors.push(`#${color}`)
+        }
+    }
+
+    generateCommitsChart(){
+        new Chart(this.chart, {
+            type: 'pie',
+            data: {
+                labels: this.reposNames,
+                datasets: [{
+                    label: '# of Votes',
+                    data: this.reposCommitsCount,
+                    backgroundColor: this.randomColors,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    }
+                }
+            }
+        });
     }
 }
