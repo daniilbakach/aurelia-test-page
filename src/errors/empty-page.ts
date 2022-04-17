@@ -3,5 +3,5 @@ import './empty-page.scss';
 
 export class EmptyPage{
     @bindable showError?: boolean = false;
-    @bindable statusCode?: any;
+    @bindable statusCode?: number;
 }

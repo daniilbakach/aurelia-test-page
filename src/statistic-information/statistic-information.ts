@@ -4,12 +4,22 @@ import moment from 'moment';
 
 import './statistic-information.scss'
 
+const headers = {
+    "Authorization": "Basic " + btoa(`daniilbakach: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`)
+}
+
+interface UserData {
+    repos_url: string,
+    created_at: Date,
+    updated_at: Date
+}
+
 export class StatisticInformation{
-    @bindable data: any;
+    @bindable data: UserData;
     reposData;
-    reposNames: any =[];
-    reposCommitsCount: any = [];
-    randomColors: any =[];
+    reposNames: string[] =[];
+    reposCommitsCount: number[] = [];
+    randomColors: string[] =[];
     
     chart;
     async attached(){
@@ -23,7 +33,11 @@ export class StatisticInformation{
 
     async loadReposData(){
         const url = this.data.repos_url;
-        const response = await fetch(url);
+        const response = await fetch(url,
+            {
+                "method": "GET",
+                "headers": headers
+            });
         this.reposData = await response.json();
         console.log(this.reposData);
         await this.getReposNames(this.reposData);
@@ -43,12 +57,17 @@ export class StatisticInformation{
         for(const repository of reposData){
             for(let i = 1; i < Infinity; i){
                 const url = `${repository.commits_url.slice(0, -6)}?per_page=100&page=${i}`;
-                const response = await fetch(url);
+                const response = await fetch(url,
+                    {
+                        "method": "GET",
+                        "headers": headers
+                    });
                 const commits = await response.json();
-                this.reposCommitsCount.push((i - 1) * 100 + commits.length)
+                console.log(commits);
                 if(commits.length === 100){
                     i++;
                 } else{
+                    this.reposCommitsCount.push((i - 1) * 100 + commits.length)
                     break;
                 }
             }

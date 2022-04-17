@@ -27,8 +27,14 @@ export class StatisticInput{
     }
 
     async loadData(){
+        const headers = {
+            "Authorization": "Basic " + btoa(`daniilbakach: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`)
+        }
         const url = `https://api.github.com/${this.search}/${this.inputValue}`;
-        const response = await fetch(url);
+        const response = await fetch(url,{
+            "method": "GET",
+            "headers": headers
+        });
         this.statusCode = response.status;
         this.data = await response.json();
         console.log(this.data);
